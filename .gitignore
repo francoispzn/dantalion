@@ -1,0 +1,35 @@
+# python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.eggs/
+build/
+dist/
+.venv/
+venv/
+
+# tooling caches
+.mypy_cache/
+.ruff_cache/
+.pytest_cache/
+.hypothesis/
+htmlcov/
+.coverage
+.coverage.*
+coverage.xml
+
+# env
+.env
+.env.*
+!.env.example
+
+# editors / os
+.idea/
+.vscode/
+.DS_Store
+
+# project runtime
+.dantalion/
+traces/
+*.gguf
+site/
