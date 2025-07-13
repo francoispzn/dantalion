@@ -28,6 +28,7 @@ from pydantic import BaseModel, ValidationError
 from dantalion.errors import SchemaValidationError
 from dantalion.providers.base import Provider
 from dantalion.structured.extract import parse_lenient
+from dantalion.structured.gbnf import schema_to_gbnf
 from dantalion.types import CompletionRequest, Message, ResponseFormat, Usage
 
 T = TypeVar("T", bound=BaseModel)
@@ -59,12 +60,16 @@ def structure(
     """Return an instance of ``model_type`` produced by ``provider``."""
     caps = provider.capabilities()
     schema = model_type.model_json_schema()
-    base_strategy = "schema" if caps.json_schema else "prompt"
-    response_format = (
-        ResponseFormat(name=_schema_name(model_type), json_schema=schema)
-        if caps.json_schema
-        else None
-    )
+    name = _schema_name(model_type)
+    if caps.json_schema:
+        base_strategy = "schema"
+        response_format: ResponseFormat | None = ResponseFormat(name=name, json_schema=schema)
+    elif caps.grammar:
+        base_strategy = "grammar"
+        response_format = ResponseFormat(name=name, grammar=schema_to_gbnf(schema))
+    else:
+        base_strategy = "prompt"
+        response_format = None
 
     conversation = [*messages, Message.user(_schema_instruction(schema))]
     usage = Usage()
