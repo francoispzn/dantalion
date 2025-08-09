@@ -1,18 +1,34 @@
 """What a run produces.
 
 These are plain records, deliberately rich: a run is not just its final answer
-but the whole reasoning trail — every assistant turn, every tool call, and what
-each tool returned. The CLI prints a summary, the evaluator scores the trail, and
-the tracer can reconstruct it. Keeping all of it makes the agent auditable rather
-than a black box.
+but the whole reasoning trail — the plan it drew up, every assistant turn, every
+tool call and its result, and any critiques of the proposed answer. The CLI
+prints a summary, the evaluator scores the trail, and the tracer can reconstruct
+it. Keeping all of it makes the agent auditable rather than a black box.
 """
 
 from __future__ import annotations
 
 from dataclasses import dataclass, field
 
+from pydantic import BaseModel
+
 from dantalion.tools.base import ToolResult
 from dantalion.types import Message, ToolCall, Usage
+
+
+class Plan(BaseModel):
+    """An ordered list of steps the agent intends to take."""
+
+    steps: list[str]
+
+
+class Critique(BaseModel):
+    """A reviewer's judgement on whether a proposed answer is well supported."""
+
+    sufficient: bool
+    reasoning: str
+    guidance: str = ""
 
 
 @dataclass(frozen=True)
@@ -42,6 +58,8 @@ class RunResult:
     usage: Usage = field(default_factory=Usage)
     finished: bool = True
     stop_reason: str = "completed"
+    plan: Plan | None = None
+    critiques: list[Critique] = field(default_factory=list)
 
     @property
     def tool_calls(self) -> list[ToolCall]:
