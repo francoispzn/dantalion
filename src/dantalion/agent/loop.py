@@ -23,6 +23,7 @@ from dantalion.agent.critic import review_answer
 from dantalion.agent.plan import format_plan, make_plan
 from dantalion.agent.result import Critique, Plan, RunResult, Step, ToolInvocation
 from dantalion.errors import ToolNotFound
+from dantalion.memory.compaction import ContextCompactor
 from dantalion.providers.base import Provider
 from dantalion.tools.base import ToolResult
 from dantalion.tools.registry import ToolRegistry
@@ -53,6 +54,7 @@ class Agent:
         review: bool = False,
         max_reviews: int = 1,
         cancellation: CancellationToken | None = None,
+        compactor: ContextCompactor | None = None,
     ) -> None:
         self.provider = provider
         self.tools = tools or ToolRegistry()
@@ -66,6 +68,7 @@ class Agent:
         self.review = review
         self.max_reviews = max_reviews
         self.cancellation = cancellation
+        self.compactor = compactor
 
     def run(self, task: str) -> RunResult:
         """Investigate ``task`` and return the full trail."""
@@ -90,6 +93,9 @@ class Agent:
             breached = budget.exceeded()
             if breached is not None:
                 return self._result(None, messages, steps, budget, False, breached, plan, critiques)
+
+            if self.compactor is not None:
+                messages = self.compactor.compact(messages)
 
             response = self.provider.complete(
                 CompletionRequest(messages=messages, tools=specs, temperature=self.temperature)
