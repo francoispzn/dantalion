@@ -72,3 +72,7 @@ class Cancelled(DantalionError):
 
 class AgentError(DantalionError):
     """The agent loop reached a state it could not recover from."""
+
+
+class ReplayMismatch(DantalionError):
+    """A replayed request did not match what the cassette recorded."""
