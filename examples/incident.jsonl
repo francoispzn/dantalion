@@ -1,0 +1,20 @@
+{"ts": "2025-01-01T00:00:00Z", "stream": "latency_ms", "value": 95}
+{"ts": "2025-01-01T00:00:00Z", "stream": "disk_used_pct", "value": 41}
+{"ts": "2025-01-01T00:01:00Z", "stream": "latency_ms", "value": 102}
+{"ts": "2025-01-01T00:01:00Z", "stream": "app_log", "level": "INFO", "message": "request handled in 102ms"}
+{"ts": "2025-01-01T00:02:00Z", "stream": "latency_ms", "value": 98}
+{"ts": "2025-01-01T00:02:00Z", "stream": "disk_used_pct", "value": 44}
+{"ts": "2025-01-01T00:03:00Z", "stream": "latency_ms", "value": 110}
+{"ts": "2025-01-01T00:04:00Z", "stream": "latency_ms", "value": 105}
+{"ts": "2025-01-01T00:04:00Z", "stream": "disk_used_pct", "value": 47}
+{"ts": "2025-01-01T00:05:00Z", "stream": "latency_ms", "value": 1180}
+{"ts": "2025-01-01T00:05:00Z", "stream": "disk_used_pct", "value": 92}
+{"ts": "2025-01-01T00:05:00Z", "stream": "app_log", "level": "ERROR", "message": "disk write failed: no space left on device"}
+{"ts": "2025-01-01T00:06:00Z", "stream": "latency_ms", "value": 1240}
+{"ts": "2025-01-01T00:06:00Z", "stream": "disk_used_pct", "value": 96}
+{"ts": "2025-01-01T00:06:00Z", "stream": "app_log", "level": "ERROR", "message": "flush timeout after disk write failure"}
+{"ts": "2025-01-01T00:07:00Z", "stream": "latency_ms", "value": 1305}
+{"ts": "2025-01-01T00:07:00Z", "stream": "disk_used_pct", "value": 97}
+{"ts": "2025-01-01T00:08:00Z", "stream": "latency_ms", "value": 870}
+{"ts": "2025-01-01T00:09:00Z", "stream": "latency_ms", "value": 410}
+{"ts": "2025-01-01T00:09:00Z", "stream": "disk_used_pct", "value": 61}
