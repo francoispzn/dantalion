@@ -1,0 +1,27 @@
+# Optional convenience stack: an Ollama server plus the agent pointed at it.
+#
+#   docker compose run --rm dantalion investigate examples/incident.jsonl \
+#       --model ollama:llama3.1
+#
+# (Pull a model first: docker compose exec ollama ollama pull llama3.1)
+
+services:
+  ollama:
+    image: ollama/ollama:latest
+    ports:
+      - "11434:11434"
+    volumes:
+      - ollama:/root/.ollama
+
+  dantalion:
+    build: .
+    depends_on:
+      - ollama
+    environment:
+      DANTALION_BASE_URL: http://ollama:11434
+      DANTALION_MODEL: ollama:llama3.1
+    entrypoint: ["uv", "run", "dantalion"]
+    command: ["--help"]
+
+volumes:
+  ollama:

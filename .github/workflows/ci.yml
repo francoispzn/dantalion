@@ -1,0 +1,36 @@
+name: ci
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.11", "3.12"]
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: install uv
+        uses: astral-sh/setup-uv@v3
+        with:
+          enable-cache: true
+
+      - name: sync
+        run: uv sync --extra dev --python ${{ matrix.python-version }}
+
+      - name: lint
+        run: uv run ruff check .
+
+      - name: format
+        run: uv run ruff format --check .
+
+      - name: types
+        run: uv run mypy
+
+      - name: tests
+        run: uv run pytest
