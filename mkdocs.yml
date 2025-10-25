@@ -1,0 +1,28 @@
+site_name: Dantalion
+site_description: A model-agnostic, local-first autonomous investigation agent.
+theme:
+  name: material
+  features:
+    - navigation.sections
+    - content.code.copy
+
+nav:
+  - Home: index.md
+  - Design: design.md
+  - Decisions:
+      - Provider abstraction: adr/0001-provider-abstraction.md
+      - Synchronous core: adr/0002-synchronous-core.md
+      - Structured-output ladder: adr/0003-structured-output-ladder.md
+      - Record / replay: adr/0004-record-replay.md
+
+plugins:
+  - search
+  - mkdocstrings:
+      handlers:
+        python:
+          paths: [src]
+
+markdown_extensions:
+  - admonition
+  - pymdownx.superfences
+  - tables
